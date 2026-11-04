@@ -1,0 +1,6 @@
+{
+  "name": "Boarding House Listing Verification - Sorsogon State University Bulan Campus",
+  "description": "Verified student boarding houses in Bulan, Sorsogon with trusted verification checklists, owner contacts, and student inquiry system for SSU Bulan Campus.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
