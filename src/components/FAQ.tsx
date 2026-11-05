@@ -29,15 +29,15 @@ export const FAQ: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 bg-white border-t border-zinc-200">
+    <section className="py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-100 text-[#800000] text-xs font-bold border border-amber-300 shadow-sm">
-            <HelpCircle className="w-4 h-4 text-[#800000]" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-100 dark:bg-zinc-800 text-[#800000] dark:text-amber-300 text-xs font-bold border border-amber-300 dark:border-zinc-700 shadow-sm">
+            <HelpCircle className="w-4 h-4 text-[#800000] dark:text-amber-400" />
             Student FAQ & Guide
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">Frequently Asked Questions</h2>
-          <p className="text-sm text-zinc-600 max-w-xl mx-auto">Everything you need to know about boarding house verification, lease terms, safety, and living near SSU Bulan Campus.</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">Frequently Asked Questions</h2>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">Everything you need to know about boarding house verification, lease terms, safety, and living near SSU Bulan Campus.</p>
         </div>
 
         <div className="space-y-4">
@@ -46,11 +46,11 @@ export const FAQ: React.FC = () => {
             return (
               <div 
                 key={index}
-                className="bg-zinc-50 border border-zinc-200/80 rounded-2xl overflow-hidden transition-all shadow-sm hover:border-zinc-300"
+                className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700 rounded-2xl overflow-hidden transition-all shadow-sm hover:border-zinc-300 dark:hover:border-zinc-600"
               >
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : index)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-bold text-sm text-zinc-900 hover:bg-zinc-100/80 transition-colors cursor-pointer"
+                  className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100/80 dark:hover:bg-zinc-700/50 transition-colors cursor-pointer"
                 >
                   <span className="flex items-center gap-3">
                     <span className="w-7 h-7 rounded-xl bg-[#800000] text-amber-300 text-xs flex items-center justify-center shrink-0 shadow-sm">
@@ -58,7 +58,7 @@ export const FAQ: React.FC = () => {
                     </span>
                     {faq.question}
                   </span>
-                  {isOpen ? <ChevronUp className="w-4 h-4 text-[#800000] shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
+                  {isOpen ? <ChevronUp className="w-4 h-4 text-[#800000] dark:text-amber-400 shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
                 </button>
                 
                 <AnimatePresence>
@@ -69,7 +69,7 @@ export const FAQ: React.FC = () => {
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
                     >
-                      <div className="px-6 pb-5 pt-2 text-xs text-zinc-600 leading-relaxed border-t border-zinc-200/60 bg-white">
+                      <div className="px-6 pb-5 pt-2 text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-zinc-200/60 dark:border-zinc-700 bg-white dark:bg-zinc-900">
                         {faq.answer}
                       </div>
                     </motion.div>
