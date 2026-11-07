@@ -75,17 +75,17 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ listingId }) => 
   const numericAvg = Number(avgRating);
 
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-100 pb-6">
+    <div className="bg-white dark:bg-zinc-800 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-6 transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-700 pb-6">
         <div>
-          <h3 className="text-lg font-bold text-zinc-900 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
             <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
             Student Reviews & Ratings ({reviews.length})
           </h3>
-          <p className="text-xs text-zinc-500 mt-0.5">Verified feedback from SSU Bulan students who stayed here.</p>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Verified feedback from SSU Bulan students who stayed here.</p>
         </div>
-        <div className="flex items-center gap-3 bg-amber-50 px-4 py-2.5 rounded-xl border border-amber-300 shadow-xs">
-          <span className="text-2xl font-extrabold text-[#800000]">{avgRating}</span>
+        <div className="flex items-center gap-3 bg-amber-50 dark:bg-zinc-900 px-4 py-2.5 rounded-xl border border-amber-300 dark:border-zinc-700 shadow-xs">
+          <span className="text-2xl font-extrabold text-[#800000] dark:text-amber-400">{avgRating}</span>
           <StarRating rating={Math.round(numericAvg)} size="sm" />
         </div>
       </div>
@@ -98,7 +98,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ listingId }) => 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-2"
+            className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-700 space-y-2"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -106,33 +106,33 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ listingId }) => 
                   {rev.name.charAt(0)}
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-zinc-900 block">{rev.name}</span>
+                  <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 block">{rev.name}</span>
                   <span className="text-[10px] text-zinc-400 block">{rev.date}</span>
                 </div>
               </div>
               <StarRating rating={rev.rating} size="sm" />
             </div>
-            <p className="text-xs text-zinc-700 leading-relaxed pl-10">{rev.comment}</p>
+            <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed pl-10">{rev.comment}</p>
           </motion.div>
         ))}
       </div>
 
       {/* Add Review Form */}
-      <form onSubmit={handleAddReview} className="pt-6 border-t border-zinc-100 space-y-4">
-        <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
-          <MessageSquarePlus className="w-4 h-4 text-[#800000]" />
+      <form onSubmit={handleAddReview} className="pt-6 border-t border-zinc-100 dark:border-zinc-700 space-y-4">
+        <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider flex items-center gap-1.5">
+          <MessageSquarePlus className="w-4 h-4 text-[#800000] dark:text-amber-400" />
           Share Your Experience
         </h4>
 
-        <div className="flex items-center gap-3 bg-zinc-50 p-4 rounded-xl border border-zinc-200">
-          <span className="text-xs font-semibold text-zinc-700">Your Rating:</span>
+        <div className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700">
+          <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Your Rating:</span>
           <StarRating
             rating={rating}
             interactive={true}
             onRatingChange={setRating}
             size="lg"
           />
-          <span className="text-xs font-bold text-[#800000] ml-2">({rating} / 5 stars)</span>
+          <span className="text-xs font-bold text-[#800000] dark:text-amber-400 ml-2">({rating} / 5 stars)</span>
         </div>
 
         <textarea
@@ -141,12 +141,12 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ listingId }) => 
           placeholder="Write your review about cleanliness, water, electricity, and distance to SSU campus..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:outline-none focus:border-[#800000]"
+          className="w-full p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-[#800000]"
         ></textarea>
 
         <button
           type="submit"
-          className="px-6 py-2.5 bg-[#800000] hover:bg-[#660000] text-amber-300 font-bold text-xs rounded-xl shadow-md transition-all border border-amber-400/30 active:scale-95"
+          className="px-6 py-2.5 bg-[#800000] hover:bg-[#660000] text-amber-300 font-bold text-xs rounded-xl shadow-md transition-all border border-amber-400/30 active:scale-95 cursor-pointer"
         >
           Submit Student Review
         </button>

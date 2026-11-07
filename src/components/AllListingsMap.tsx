@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { Listing } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { Navigation, Layers } from 'lucide-react';
@@ -54,6 +57,14 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
         .addTo(map)
         .bindPopup(`<b>Sorsogon State University – Bulan Campus</b><br/>Main Campus Gate (Reference Center)`);
 
+      // Marker Cluster Group for Boarding Houses
+      const markerClusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 40,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true
+      });
+
       // Boarding House Marker Icon (Maroon/Amber)
       const bhIcon = L.divIcon({
         className: 'custom-bh-marker',
@@ -77,7 +88,7 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
             </button>
           `;
 
-          const marker = L.marker([listing.latitude, listing.longitude], { icon: bhIcon }).addTo(map);
+          const marker = L.marker([listing.latitude, listing.longitude], { icon: bhIcon });
           marker.bindPopup(popupContent);
 
           marker.on('popupopen', () => {
@@ -87,16 +98,19 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
             }
           });
 
+          markerClusterGroup.addLayer(marker);
+
           // Draw dashed line to SSU
           L.polyline([[ssuLat, ssuLng], [listing.latitude, listing.longitude]], {
             color: '#800000',
             weight: 2,
             dashArray: '4, 4',
-            opacity: 0.5
+            opacity: 0.4
           }).addTo(map);
         }
       });
 
+      map.addLayer(markerClusterGroup);
       mapInstanceRef.current = map;
     }
 
@@ -152,16 +166,16 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
     <div 
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      aria-label="Interactive map of verified boarding houses near SSU Bulan Campus. Use Arrow keys to pan and + / - to zoom."
-      className="relative w-full h-[500px] rounded-2xl overflow-hidden border border-zinc-200 shadow-sm z-10 focus:outline-none focus:ring-2 focus:ring-[#800000]"
+      aria-label="Interactive clustered map of verified boarding houses near SSU Bulan Campus. Use Arrow keys to pan and + / - to zoom."
+      className="relative w-full h-[500px] rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-sm z-10 focus:outline-none focus:ring-2 focus:ring-[#800000]"
     >
       <div ref={mapRef} className="w-full h-full" />
       
       {/* Map Legend */}
-      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-4 py-3 rounded-xl border border-zinc-200 text-xs text-zinc-800 shadow-lg z-[1000] space-y-1.5 pointer-events-none">
-        <strong className="text-zinc-900 block font-bold flex items-center gap-1.5">
-          <Navigation className="w-3.5 h-3.5 text-[#800000]" />
-          SSU Bulan Campus Map Legend
+      <div className="absolute top-4 left-4 bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-800 dark:text-zinc-200 shadow-lg z-[1000] space-y-1.5 pointer-events-none">
+        <strong className="text-zinc-900 dark:text-zinc-100 block font-bold flex items-center gap-1.5">
+          <Navigation className="w-3.5 h-3.5 text-[#800000] dark:text-amber-400" />
+          SSU Bulan Campus Map Legend (Clustered)
         </strong>
         <div className="flex items-center gap-2">
           <span className="w-3.5 h-3.5 rounded-full bg-blue-600 inline-block border border-white"></span>
@@ -171,31 +185,31 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
           <span className="w-3.5 h-3.5 rounded-full bg-[#800000] inline-block border border-white"></span>
           <span>Verified Boarding Houses ({listings.length})</span>
         </div>
-        <div className="text-[10px] text-zinc-500 pt-1 border-t border-zinc-200">
-          Tip: Use <kbd className="px-1.5 py-0.5 bg-zinc-100 border rounded font-mono">Arrow Keys</kbd> to pan & <kbd className="px-1.5 py-0.5 bg-zinc-100 border rounded font-mono">+/-</kbd> to zoom.
+        <div className="text-[10px] text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-200 dark:border-zinc-700">
+          Tip: Use <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-700 border rounded font-mono">Arrow Keys</kbd> to pan & <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-700 border rounded font-mono">+/-</kbd> to zoom.
         </div>
       </div>
 
       {/* Map Layer Switcher */}
-      <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-zinc-200 shadow-lg z-[1000] flex items-center gap-1">
-        <span className="text-[10px] font-bold text-zinc-500 px-2 flex items-center gap-1">
-          <Layers className="w-3 h-3 text-[#800000]" /> Layer:
+      <div className="absolute top-4 right-4 bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md p-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-lg z-[1000] flex items-center gap-1">
+        <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 px-2 flex items-center gap-1">
+          <Layers className="w-3 h-3 text-[#800000] dark:text-amber-400" /> Layer:
         </span>
         <button
           onClick={() => setMapLayer('standard')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'standard' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 hover:bg-zinc-100'}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'standard' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
         >
           Standard
         </button>
         <button
           onClick={() => setMapLayer('grayscale')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'grayscale' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 hover:bg-zinc-100'}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'grayscale' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
         >
           Grayscale
         </button>
         <button
           onClick={() => setMapLayer('satellite')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'satellite' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 hover:bg-zinc-100'}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'satellite' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
         >
           Satellite
         </button>
