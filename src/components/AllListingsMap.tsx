@@ -35,12 +35,12 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
 
       const tileUrls = {
         standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        grayscale: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+        grayscale: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', // CartoDB Positron for clean grayscale map style
         satellite: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
       };
 
       const layer = L.tileLayer(tileUrls[mapLayer], {
-        attribution: '&copy; OpenStreetMap contributors & Esri World Imagery'
+        attribution: '&copy; OpenStreetMap contributors & CARTO Positron'
       }).addTo(map);
 
       tileLayerRef.current = layer;
@@ -122,7 +122,7 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
     };
   }, [listings, navigate]);
 
-  // Handle Map Layer Switcher
+  // Handle Map Layer Switcher using CartoDB Positron for Grayscale
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     const map = mapInstanceRef.current;
@@ -138,7 +138,7 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
     }
 
     const newLayer = L.tileLayer(tileUrls[mapLayer], {
-      attribution: '&copy; OpenStreetMap contributors & Esri World Imagery'
+      attribution: '&copy; OpenStreetMap contributors & CARTO Positron'
     }).addTo(map);
 
     tileLayerRef.current = newLayer;
@@ -197,19 +197,19 @@ export const AllListingsMap: React.FC<AllListingsMapProps> = ({ listings }) => {
         </span>
         <button
           onClick={() => setMapLayer('standard')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'standard' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${mapLayer === 'standard' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
         >
           Standard
         </button>
         <button
           onClick={() => setMapLayer('grayscale')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'grayscale' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${mapLayer === 'grayscale' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
         >
           Grayscale
         </button>
         <button
           onClick={() => setMapLayer('satellite')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${mapLayer === 'satellite' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${mapLayer === 'satellite' ? 'bg-[#800000] text-amber-300 shadow-xs' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
         >
           Satellite
         </button>

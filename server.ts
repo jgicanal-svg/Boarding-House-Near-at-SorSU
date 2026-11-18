@@ -247,6 +247,15 @@ async function startServer() {
   const app = express();
   app.use(express.json());
 
+  // Security HTTP Headers
+  app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+  });
+
   // API Routes
   
   app.get('/api/listings', (req, res) => {
@@ -385,6 +394,33 @@ async function startServer() {
     inquiries.push(inquiry);
     res.status(201).json({ success: true, inquiry, messenger_url: listing.owner.messenger_url });
   });
+
+  // Listing Reports
+  let listingReports: { id: string; listing_id: string; reason: string; details?: string; student_email?: string; created_at: string }[] = [];
+
+  app.post('/api/reports', (req, res) => {
+    const { listing_id, reason, details, student_email } = req.body;
+    const listing = listings.find(l => l.id === listing_id);
+    if (!listing) {
+      return res.status(404).json({ error: 'Listing not found' });
+    }
+
+    const report = {
+      id: `rep-${Date.now()}`,
+      listing_id,
+      reason: reason || 'Inaccurate Information',
+      details: details || '',
+      student_email: student_email || 'student@ssubulan.edu.ph',
+      created_at: new Date().toISOString()
+    };
+    listingReports.push(report);
+    res.status(201).json({ success: true, report, message: 'Report submitted successfully. Admin team will review this property.' });
+  });
+
+  app.get('/api/reports', (req, res) => {
+    res.json(listingReports);
+  });
+
 
   // Auth logins
   app.post('/api/auth/login', (req, res) => {
